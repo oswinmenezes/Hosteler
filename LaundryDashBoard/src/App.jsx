@@ -1,87 +1,81 @@
 import React, { useEffect, useState } from 'react';
-import "./App.css"
+import "./App.css";
 import { supabase } from '../SupabaseClient';
 import Login from './Login';
 
-export default function App(){
-  const [session,setSession]=useState(null)
+export default function App() {
+  const [session, setSession] = useState(null);
   // --- Navigation State ---
   const [view, setView] = useState('home');
-  // --- Data State with Dummy Data ---
+  // --- Data State ---
   const [pending, setPending] = useState([]);
-  
   const [mismatched, setMismatched] = useState([]);
-  
   const [inProgress, setInProgress] = useState([]);
-  
   const [completed, setCompleted] = useState([]);
-
   const [searchQuery, setSearchQuery] = useState("");
-
 
   const [editingId, setEditingId] = useState(null);
   const [editValue, setEditValue] = useState("");
 
-  async function fetchDet(){
-    const{data,error}=await supabase.from("Laundry").select("*");
-    if(error){
-      console.log(error.message)
-      return
+  async function handleLogout() {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.log("Logout Failed:", error.message);
+      return;
     }
-    console.log(data)
-    setPending(data.filter(d=>d.Status==="Pending"))
-    setMismatched(data.filter(d=>d.Status==="Mismatch"))
-    setInProgress(data.filter(d=>d.Status==="InProgress"))
-    setCompleted(data.filter(d=>d.Status==="Completed"))
-
+    console.log("Logout Successful");
+    setSession(null);
   }
 
-  useEffect(()=>{
-    fetchDet()
-  },[])
-
-  useEffect(()=>{
-    async function getCurrSession() {
-      const{data,error}=await supabase.auth.getSession()
-      if(error){
-        console.log("failed to get session :",error.message)
-        return
-      }
-      console.log("data :",data)
-      setSession(data.session)
+  async function fetchDet() {
+    const { data, error } = await supabase.from("Laundry").select("*");
+    if (error) {
+      console.log(error.message);
+      return;
     }
-    getCurrSession()
-  },[])
+    setPending(data.filter(d => d.Status === "Pending"));
+    setMismatched(data.filter(d => d.Status === "Mismatch"));
+    setInProgress(data.filter(d => d.Status === "InProgress"));
+    setCompleted(data.filter(d => d.Status === "Completed"));
+  }
 
+  useEffect(() => {
+    fetchDet();
+  }, []);
 
-
-
-
+  useEffect(() => {
+    async function getCurrSession() {
+      const { data, error } = await supabase.auth.getSession();
+      if (error) {
+        console.log("failed to get session :", error.message);
+        return;
+      }
+      setSession(data.session);
+    }
+    getCurrSession();
+  }, []);
 
   // --- Logic Handlers ---
-  async function handleAction(item, action){
+  async function handleAction(item, action) {
     const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    if(action==="pickup"){
-      const {data,error}=await supabase.from("Laundry").delete().eq("Unique_ID",item.Unique_ID)
-      if(error){
-        console.log(error.message)
-        return
+    if (action === "pickup") {
+      const { error } = await supabase.from("Laundry").delete().eq("Unique_ID", item.Unique_ID);
+      if (error) {
+        console.log(error.message);
+        return;
+      }
+    } else {
+      const { error } = await supabase.from("Laundry").update({ "Status": action, "Time": time }).eq("Unique_ID", item.Unique_ID);
+      if (error) {
+        console.log(error.message);
+        return;
       }
     }
-    else{
-      const {data,error}=await supabase.from("Laundry").update({"Status":action,"Time":time}).eq("Unique_ID",item.Unique_ID)
-      if(error){
-        console.log(error.message)
-        return
-      }
-    }
-    console.log("Update Successfull")
     fetchDet();
-  };
+  }
 
   async function handleSaveEdit(item) {
     if (!editValue || isNaN(editValue)) return;
-    
     const { error } = await supabase
       .from("Laundry")
       .update({ "Cloth_Count": parseInt(editValue) })
@@ -91,14 +85,12 @@ export default function App(){
       console.log("Error updating count:", error.message);
       return;
     }
-
     setEditingId(null);
     fetchDet();
   }
 
-
-  const filteredPending = pending.filter(p => 
-    p.Unique_ID.includes(searchQuery.toLowerCase()) ||
+  const filteredPending = pending.filter(p =>
+    p.Unique_ID.toLowerCase().includes(searchQuery.toLowerCase()) ||
     p.User_Name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -142,37 +134,37 @@ export default function App(){
 
   const renderDiscrepancy = () => (
     <div className="view-container">
-      <div style={{ fontWeight: '700', marginBottom: '1.5rem', fontSize: '1.25rem' }}>Count Discrepancies</div>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+      <div className="section-title">Count Discrepancies</div>
+      <div className="list-container">
         {mismatched.map(item => (
-          <div key={item.id} style={{ background: 'white', padding: '1.25rem', borderRadius: '12px', border: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <div>
-              <div style={{ fontSize: '0.75rem', fontWeight: 'bold', color: '#2563eb', marginBottom: '4px' }}>UID:{item.Unique_ID}</div>
-              <div style={{ fontWeight: '700', marginBottom: '4px' }}>{item.User_Name}</div>
-              
+          <div key={item.id} className="list-item">
+            <div className="item-info">
+              <div className="id-label text-blue">UID:{item.Unique_ID}</div>
+              <div className="name-label">{item.User_Name}</div>
+
               {editingId === item.Unique_ID ? (
-                <div style={{ marginTop: '8px', display: 'flex', gap: '8px', alignItems: 'center' }}>
-                  <input 
-                    type="number" 
-                    style={{ width: '80px', padding: '6px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
-                    value={editValue} 
+                <div className="edit-box">
+                  <input
+                    type="number"
+                    className="edit-input"
+                    value={editValue}
                     onChange={(e) => setEditValue(e.target.value)}
                     autoFocus
                   />
-                  <button style={{ padding: '6px 12px', background: '#2563eb', color: 'white', borderRadius: '6px', border: 'none', fontSize: '0.875rem' }} onClick={() => handleSaveEdit(item)}>Save</button>
-                  <button style={{ padding: '6px 12px', background: '#f1f5f9', borderRadius: '6px', border: 'none', fontSize: '0.875rem' }} onClick={() => setEditingId(null)}>Cancel</button>
+                  <button className="btn-save" onClick={() => handleSaveEdit(item)}>Save</button>
+                  <button className="btn-cancel" onClick={() => setEditingId(null)}>Cancel</button>
                 </div>
               ) : (
-                <div style={{ fontSize: '0.875rem', color: '#64748b' }}>
-                  Flagged: {item.Time} | Qty: <span style={{ fontWeight: 'bold', color: '#2563eb' }}>{item.Cloth_Count}</span>
+                <div className="timestamp-label">
+                  Flagged: {item.Time} | Qty: <span className="font-bold text-blue">{item.Cloth_Count}</span>
                 </div>
               )}
             </div>
-            
-            <div style={{ display: 'flex', gap: '0.5rem' }}>
+
+            <div className="actions">
               {editingId !== item.Unique_ID && (
-                <button 
-                  style={{ padding: '0.5rem 1rem', background: '#f1f5f9', border: 'none', borderRadius: '8px', fontWeight: '600', cursor: 'pointer' }}
+                <button
+                  className="btn-edit"
                   onClick={() => {
                     setEditingId(item.Unique_ID);
                     setEditValue(item.Cloth_Count);
@@ -181,8 +173,8 @@ export default function App(){
                   Edit Qty
                 </button>
               )}
-              <button 
-                style={{ padding: '0.5rem 1rem', background: '#0f172a', color: 'white', border: 'none', borderRadius: '8px', fontWeight: '600', cursor: 'pointer' }}
+              <button
+                className="btn-dark"
                 onClick={() => handleAction(item, 'InProgress')}
               >
                 Start Wash
@@ -190,11 +182,10 @@ export default function App(){
             </div>
           </div>
         ))}
-        {mismatched.length === 0 && <div style={{ textAlign: 'center', padding: '3rem', border: '2px dashed #e2e8f0', borderRadius: '12px', color: '#64748b' }}>No active discrepancies.</div>}
+        {mismatched.length === 0 && <div className="empty-dashed">No active discrepancies.</div>}
       </div>
     </div>
   );
-
 
   const renderProcessing = () => (
     <div className="view-container">
@@ -247,52 +238,57 @@ export default function App(){
   );
 
   return (
-    session?<div className="app-shell">
-      <aside>
-        <div className="logo">KapikadLion Laundry </div>
-        <nav>
-          <div className={`nav-item ${view === 'home' ? 'active' : ''}`} onClick={() => setView('home')}>
-            <span>Home Dashboard</span>
-          </div>
-          <div className={`nav-item ${view === 'discrepancy' ? 'active' : ''}`} onClick={() => setView('discrepancy')}>
-            <span>Discrepancy</span>
-            <span className="nav-badge">{mismatched.length}</span>
-          </div>
-          <div className={`nav-item ${view === 'processing' ? 'active' : ''}`} onClick={() => setView('processing')}>
-            <span>Processing</span>
-            <span className="nav-badge">{inProgress.length}</span>
-          </div>
-          <div className={`nav-item ${view === 'collection' ? 'active' : ''}`} onClick={() => setView('collection')}>
-            <span>Ready / Collection</span>
-            <span className="nav-badge">{completed.length}</span>
-          </div>
-        </nav>
-      </aside>
+    session ? (
+      <div className="app-shell">
+        <aside>
+          <div className="logo">KapikadLion Laundry </div>
+          <nav>
+            <div className={`nav-item ${view === 'home' ? 'active' : ''}`} onClick={() => setView('home')}>
+              <span>Home Dashboard</span>
+            </div>
+            <div className={`nav-item ${view === 'discrepancy' ? 'active' : ''}`} onClick={() => setView('discrepancy')}>
+              <span>Discrepancy</span>
+              <span className="nav-badge">{mismatched.length}</span>
+            </div>
+            <div className={`nav-item ${view === 'processing' ? 'active' : ''}`} onClick={() => setView('processing')}>
+              <span>Processing</span>
+              <span className="nav-badge">{inProgress.length}</span>
+            </div>
+            <div className={`nav-item ${view === 'collection' ? 'active' : ''}`} onClick={() => setView('collection')}>
+              <span>Ready / Collection</span>
+              <span className="nav-badge">{completed.length}</span>
+            </div>
+            <div className="logout-container">
+              <button onClick={handleLogout} className="btn-logout">Sign Out</button>
+            </div>
+          </nav>
+        </aside>
 
-      <main>
-        <header>
-          <div className="header-title">
-            {view === 'home' && "Operations Overview"}
-            {view === 'discrepancy' && "Discrepancy Management"}
-            {view === 'processing' && "Washing Queue"}
-            {view === 'collection' && "Collection Terminal"}
-          </div>
-          <input 
-            className="search-box" 
-            type="text"
-            placeholder="Search student or code..." 
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </header>
+        <main>
+          <header>
+            <div className="header-title">
+              {view === 'home' && "Operations Overview"}
+              {view === 'discrepancy' && "Discrepancy Management"}
+              {view === 'processing' && "Washing Queue"}
+              {view === 'collection' && "Collection Terminal"}
+            </div>
+            <input
+              className="search-box"
+              type="text"
+              placeholder="Search student or code..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </header>
 
-        <section className="content-area">
-          {view === 'home' && renderHome()}
-          {view === 'discrepancy' && renderDiscrepancy()}
-          {view === 'processing' && renderProcessing()}
-          {view === 'collection' && renderCollection()}
-        </section>
-      </main>
-    </div>:<Login setSession={setSession} />
+          <section className="content-area">
+            {view === 'home' && renderHome()}
+            {view === 'discrepancy' && renderDiscrepancy()}
+            {view === 'processing' && renderProcessing()}
+            {view === 'collection' && renderCollection()}
+          </section>
+        </main>
+      </div>
+    ) : <Login setSession={setSession} />
   );
 };

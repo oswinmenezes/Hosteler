@@ -27,7 +27,7 @@ export default function Login({ setSession }) { // ✅ get setSession from props
   return (
     <div className="login-screen">
       <div className="login-card">
-        <div className="logo-center">LAUNDRY PRO</div>
+        <div className="logo-center">Kapikad Lion Laundry</div>
         <h2>Welcome Back</h2>
         <p>Please enter your details to sign in</p>
 

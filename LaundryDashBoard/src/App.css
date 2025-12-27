@@ -344,6 +344,10 @@ flex: 1;
 background: #10b981;
 color: white;
 }
+.btn-success:hover{
+    background: #10b981;
+    color: white;
+}
 
 button:hover {
 opacity: 0.9;
@@ -406,3 +410,245 @@ background: white;
 border-radius: 12px;
 border: 1px dashed #e2e8f0;
 }
+/* Missing Sidebar and Layout Styles */
+.app-shell {
+display: flex;
+height: 100vh;
+background: #f8fafc;
+color: #0f172a;
+font-family: sans-serif;
+}
+
+aside {
+width: 260px;
+background: #0f172a;
+color: white;
+display: flex;
+flex-direction: column;
+padding: 1rem 0;
+}
+
+.logo {
+padding: 1rem 2rem;
+font-size: 1.25rem;
+font-weight: 800;
+color: #3b82f6;
+border-bottom: 1px solid rgba(255,255,255,0.1);
+margin-bottom: 1rem;
+}
+
+nav { flex: 1; }
+
+.nav-item {
+padding: 1rem 2rem;
+cursor: pointer;
+display: flex;
+justify-content: space-between;
+align-items: center;
+color: #94a3b8;
+transition: 0.2s;
+}
+
+.nav-item:hover {
+background: rgba(255,255,255,0.05);
+color: white;
+}
+
+.nav-item.active {
+background: rgba(59,130,246,0.1);
+color: #3b82f6;
+border-left: 4px solid #3b82f6;
+}
+
+.nav-badge {
+background: #3b82f6;
+color: white;
+padding: 2px 8px;
+border-radius: 4px;
+font-size: 0.75rem;
+font-weight: bold;
+}
+
+/* Header and Content */
+main {
+flex: 1;
+overflow-y: auto;
+display: flex;
+flex-direction: column;
+}
+
+header {
+padding: 1.5rem 2rem;
+background: white;
+border-bottom: 1px solid #e2e8f0;
+display: flex;
+justify-content: space-between;
+align-items: center;
+position: sticky;
+top: 0;
+z-index: 10;
+}
+
+.header-title {
+font-size: 1.25rem;
+font-weight: 700;
+}
+
+.search-box {
+padding: 0.6rem 1rem;
+border-radius: 8px;
+border: 1px solid #e2e8f0;
+width: 280px;
+outline: none;
+}
+
+.search-box:focus { border-color: #3b82f6; }
+
+.content-area { padding: 2rem; }
+
+/* Dashboard Cards */
+.stats-row {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+gap: 1rem;
+margin-bottom: 2rem;
+}
+
+.stat-card {
+padding: 1.5rem;
+background: white;
+border-radius: 12px;
+border: 1px solid #e2e8f0;
+cursor: pointer;
+transition: 0.2s;
+}
+
+.stat-card:hover {
+transform: translateY(-2px);
+box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+}
+
+.stat-label {
+font-size: 0.75rem;
+font-weight: bold;
+color: #64748b;
+text-transform: uppercase;
+display: block;
+}
+
+.stat-value {
+font-size: 2rem;
+font-weight: 800;
+margin-top: 0.5rem;
+display: block;
+}
+
+/* Card and List Elements */
+.item-card {
+background: white;
+padding: 1.25rem;
+border-radius: 12px;
+border: 1px solid #e2e8f0;
+}
+
+.card-top {
+display: flex;
+justify-content: space-between;
+margin-bottom: 0.5rem;
+}
+
+.id-label {
+font-size: 0.75rem;
+font-weight: bold;
+color: #2563eb;
+}
+
+.qty-badge {
+font-size: 0.75rem;
+padding: 2px 8px;
+background: #eff6ff;
+color: #1e40af;
+border-radius: 99px;
+font-weight: 600;
+}
+
+.name-label {
+font-weight: 700;
+font-size: 1.1rem;
+margin-bottom: 1rem;
+}
+
+.list-item {
+background: white;
+padding: 1.25rem;
+border-radius: 12px;
+border: 1px solid #e2e8f0;
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 1rem;
+}
+
+.timestamp-label {
+font-size: 0.875rem;
+color: #64748b;
+margin-top: 4px;
+}
+
+/* Buttons and UI Helpers */
+.btn-primary {
+background: #2563eb;
+color: white;
+border: none;
+padding: 0.6rem 1rem;
+border-radius: 8px;
+font-weight: 600;
+cursor: pointer;
+}
+
+.btn-secondary {
+background: #f1f5f9;
+color: #475569;
+border: none;
+padding: 0.6rem 1rem;
+border-radius: 8px;
+font-weight: 600;
+cursor: pointer;
+}
+
+.btn-success {
+background: #10b981;
+color: white;
+border: none;
+padding: 0.6rem 1rem;
+border-radius: 8px;
+font-weight: 600;
+cursor: pointer;
+}
+
+.logout-container {
+padding: 1rem;
+border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.btn-logout {
+    font-weight: 700;
+    font-size: 20px;
+width: 100%;
+padding: 0.75rem;
+background: transparent;
+color: #94a3b8;
+border: 1px solid #334155;
+border-radius: 8px;
+cursor: pointer;
+}
+
+.btn-logout:hover{
+    background-color: white;
+    color:#ef4444 ;
+}
+
+
+.text-red { color: #ef4444; }
+.text-blue { color: #3b82f6; }
+.text-green { color: #10b981; }
