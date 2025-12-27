@@ -19,6 +19,9 @@ export default function App(){
   const [searchQuery, setSearchQuery] = useState("");
 
 
+  const [editingId, setEditingId] = useState(null);
+  const [editValue, setEditValue] = useState("");
+
   async function fetchDet(){
     const{data,error}=await supabase.from("Laundry").select("*");
     if(error){
@@ -76,6 +79,24 @@ export default function App(){
     fetchDet();
   };
 
+  async function handleSaveEdit(item) {
+    if (!editValue || isNaN(editValue)) return;
+    
+    const { error } = await supabase
+      .from("Laundry")
+      .update({ "Cloth_Count": parseInt(editValue) })
+      .eq("Unique_ID", item.Unique_ID);
+
+    if (error) {
+      console.log("Error updating count:", error.message);
+      return;
+    }
+
+    setEditingId(null);
+    fetchDet();
+  }
+
+
   const filteredPending = pending.filter(p => 
     p.Unique_ID.includes(searchQuery.toLowerCase()) ||
     p.User_Name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -121,22 +142,59 @@ export default function App(){
 
   const renderDiscrepancy = () => (
     <div className="view-container">
-      <div className="section-title">Count Discrepancies</div>
-      <div className="list-container">
+      <div style={{ fontWeight: '700', marginBottom: '1.5rem', fontSize: '1.25rem' }}>Count Discrepancies</div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         {mismatched.map(item => (
-          <div className="list-item" key={item.id}>
-            <div className="item-info">
-              <div className="id-label">UID:{item.Unique_ID}</div>
-              <div className="name-label">{item.User_Name}</div>
-              <div className="timestamp-label">Flagged: {item.Time} | Qty: {item.Cloth_Count}</div>
+          <div key={item.id} style={{ background: 'white', padding: '1.25rem', borderRadius: '12px', border: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div>
+              <div style={{ fontSize: '0.75rem', fontWeight: 'bold', color: '#2563eb', marginBottom: '4px' }}>UID:{item.Unique_ID}</div>
+              <div style={{ fontWeight: '700', marginBottom: '4px' }}>{item.User_Name}</div>
+              
+              {editingId === item.Unique_ID ? (
+                <div style={{ marginTop: '8px', display: 'flex', gap: '8px', alignItems: 'center' }}>
+                  <input 
+                    type="number" 
+                    style={{ width: '80px', padding: '6px', borderRadius: '6px', border: '1px solid #cbd5e1' }}
+                    value={editValue} 
+                    onChange={(e) => setEditValue(e.target.value)}
+                    autoFocus
+                  />
+                  <button style={{ padding: '6px 12px', background: '#2563eb', color: 'white', borderRadius: '6px', border: 'none', fontSize: '0.875rem' }} onClick={() => handleSaveEdit(item)}>Save</button>
+                  <button style={{ padding: '6px 12px', background: '#f1f5f9', borderRadius: '6px', border: 'none', fontSize: '0.875rem' }} onClick={() => setEditingId(null)}>Cancel</button>
+                </div>
+              ) : (
+                <div style={{ fontSize: '0.875rem', color: '#64748b' }}>
+                  Flagged: {item.Time} | Qty: <span style={{ fontWeight: 'bold', color: '#2563eb' }}>{item.Cloth_Count}</span>
+                </div>
+              )}
             </div>
-            <button className="btn-primary btn-fixed" onClick={() => handleAction(item, 'InProgress')}>Resolve & Start Wash</button>
+            
+            <div style={{ display: 'flex', gap: '0.5rem' }}>
+              {editingId !== item.Unique_ID && (
+                <button 
+                  style={{ padding: '0.5rem 1rem', background: '#f1f5f9', border: 'none', borderRadius: '8px', fontWeight: '600', cursor: 'pointer' }}
+                  onClick={() => {
+                    setEditingId(item.Unique_ID);
+                    setEditValue(item.Cloth_Count);
+                  }}
+                >
+                  Edit Qty
+                </button>
+              )}
+              <button 
+                style={{ padding: '0.5rem 1rem', background: '#0f172a', color: 'white', border: 'none', borderRadius: '8px', fontWeight: '600', cursor: 'pointer' }}
+                onClick={() => handleAction(item, 'InProgress')}
+              >
+                Start Wash
+              </button>
+            </div>
           </div>
         ))}
-        {mismatched.length === 0 && <div className="empty">No active discrepancies.</div>}
+        {mismatched.length === 0 && <div style={{ textAlign: 'center', padding: '3rem', border: '2px dashed #e2e8f0', borderRadius: '12px', color: '#64748b' }}>No active discrepancies.</div>}
       </div>
     </div>
   );
+
 
   const renderProcessing = () => (
     <div className="view-container">
