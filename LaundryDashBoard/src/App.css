@@ -1,7 +1,130 @@
 body{
     margin: 0px;
 }
+.login-screen {
+display: flex;
+align-items: center;
+justify-content: center;
+min-height: 100vh;
+background-color: #f1f5f9; 
+padding: 20px;
+}
 
+/* Login Card */
+.login-card {
+background: #ffffff;
+padding: 40px;
+border-radius: 16px;
+box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+width: 100%;
+max-width: 400px;
+animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+from { opacity: 0; transform: translateY(10px); }
+to { opacity: 1; transform: translateY(0); }
+}
+
+
+.logo-center {
+font-weight: 800;
+font-size: 24px;
+color: #2563eb; 
+text-align: center;
+margin-bottom: 24px;
+letter-spacing: -0.025em;
+}
+
+.login-card h2 {
+font-size: 20px;
+font-weight: 700;
+margin-bottom: 8px;
+text-align: center;
+color: #0f172a; /* Slate 900 */
+}
+
+.login-card p {
+color: #64748b; /* Slate 500 */
+font-size: 14px;
+text-align: center;
+margin-bottom: 32px;
+}
+
+/* Form Styling */
+.form-group {
+margin-bottom: 20px;
+}
+
+.form-group label {
+display: block;
+font-size: 13px;
+font-weight: 600;
+margin-bottom: 6px;
+color: #475569; /* Slate 600 */
+}
+
+.form-group input {
+width: 100%;
+padding: 12px 16px;
+border: 1px solid #e2e8f0; /* Slate 200 */
+border-radius: 8px;
+font-size: 14px;
+transition: all 0.2s ease;
+outline: none;
+background-color: #f8fafc;
+}
+
+.form-group input:focus {
+background-color: #ffffff;
+border-color: #2563eb;
+box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+
+.btn-primary {
+background-color: #1e293b; 
+color: #ffffff;
+border: none;
+border-radius: 8px;
+font-weight: 600;
+cursor: pointer;
+transition: background-color 0.2s, transform 0.1s;
+}
+
+.btn-primary:hover {
+background-color: #0f172a;
+}
+
+.btn-primary:active {
+transform: scale(0.98);
+}
+
+.btn-full {
+width: 100%;
+padding: 14px;
+font-size: 15px;
+margin-top: 8px;
+}
+
+/* Error Message (Added for Supabase feedback) */
+.error-message {
+background-color: #fef2f2;
+color: #dc2626;
+padding: 10px;
+border-radius: 8px;
+font-size: 12px;
+margin-bottom: 16px;
+text-align: center;
+border: 1px solid #fee2e2;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+.login-card {
+padding: 24px;
+}
+}
 .app-shell {
 display: flex;
 min-height: 100vh;
@@ -211,6 +334,10 @@ background: white;
 border: 1px solid #e2e8f0;
 color: #64748b;
 flex: 1;
+}
+.btn-secondary:hover{
+    background-color: #2563eb;
+    color: white;
 }
 
 .btn-success {
