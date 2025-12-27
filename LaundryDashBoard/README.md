@@ -1,5 +1,3 @@
-Laundry Pro Dashboard
-
 A specialized internal management system for "KapikadLion Laundry" designed to track student laundry cycles from initial request to final collection. This dashboard provides real-time updates and discrepancy management to ensure accurate clothing counts.
 
 🚀 Features
