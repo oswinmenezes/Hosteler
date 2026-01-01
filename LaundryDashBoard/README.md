@@ -1,122 +1,119 @@
 🚗 PlotSense – IoT-Based Smart Parking System
 
-PlotSense is an IoT-based smart parking prototype designed to solve parking management issues in malls and public spaces. It uses IR sensors with ESP32 to detect parking slot occupancy and sends real-time data to Supabase, which is visualized on a React-based dashboard with authentication.
+PlotSense is an IoT-based smart parking prototype designed to solve parking management issues in malls and public spaces. It uses IR sensors and an ESP32 to detect parking slot occupancy and sends real-time data to Supabase, which is displayed on a React-based dashboard with authentication.
+
+🔧 Tech Stack
+
+ESP32
+
+IR Sensors
+
+Supabase (Database + Authentication)
+
+React.js
+
+Node.js / npm
+
+📁 Project Structure
+PlotSense/
+├── smartParking/        # ESP32 (Arduino) code
+├── src/
+│   ├── supabaseClient.js
+│   └── components/
+├── package.json
+└── README.md
+
+⚙️ Setup Instructions
+1️⃣ Clone the Repository
+git clone https://github.com/oswinmenezes/PlotSense.git
+cd PlotSense
+
+🔌 ESP32 Setup
+2️⃣ Upload ESP32 Code
+
+Open Arduino IDE
+
+Open the file smartParking
+
+Select the correct ESP32 board and COM port
+
+3️⃣ Add WiFi & Supabase Credentials (ESP32)
+
+Before uploading the code, update the following in the smartParking file:
+
+const char* ssid = "YOUR_WIFI_SSID";
+const char* password = "YOUR_WIFI_PASSWORD";
+
+const char* supabaseUrl = "YOUR_SUPABASE_URL";
+const char* supabaseKey = "YOUR_SUPABASE_ANON_KEY";
 
 
-🚀 Features
+📌 Make sure:
 
-Operations Overview (Home): High-level dashboard showing total counts for Discrepancies, Processing items, and items Ready for collection.
+IR sensors are connected to the correct ESP32 GPIO pins
 
-Incoming Queue: Real-time list of pending requests with quick-action buttons to start the washing process or flag a count mismatch.
+WiFi credentials are correct
 
-Discrepancy Management:
+Supabase project is already created
 
-Dedicated view for items with mismatched clothing counts.
+4️⃣ Upload Code to ESP32
 
-Inline Editing: Admins can correct the Cloth_Count directly on the card before resolving.
+Click Upload in Arduino IDE
 
-Resolve actions to move items back into the washing pipeline.
+Open Serial Monitor to confirm ESP32 is connected and sending data
 
-Processing Queue: Tracks items currently in the washing/drying phase with timestamps.
+🗄️ Supabase Setup
+5️⃣ Create a Supabase Project
 
-Collection Terminal: A structured table view of completed orders, allowing for one-click "Collected" actions that archive the record.
+Go to the Supabase Dashboard
 
-Secure Authentication: Integration with Supabase Auth for protected access.
+Create a new project
 
-🛠️ Technical Stack
+Copy:
 
-Frontend: React.js
+Project URL
 
-Backend/Database: Supabase (PostgreSQL & Real-time)
+Anon Public Key
 
-Styling: Modern CSS with a focus on administrative dashboard UX (Slate & Blue palette).
+🖥️ Frontend (React Dashboard) Setup
+6️⃣ Add Supabase Credentials
 
-State Management: React Hooks (useState, useEffect) for local UI state and navigation.
+Open src/supabaseClient.js and update:
 
-📂 Project Structure
+import { createClient } from "@supabase/supabase-js";
 
-App.jsx: The core application shell containing the navigation logic, view rendering, and Supabase data fetching.
+const supabaseUrl = "YOUR_SUPABASE_URL";
+const supabaseAnonKey = "YOUR_SUPABASE_ANON_KEY";
 
-Login.jsx: A reusable authentication component for user sign-in.
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-SupabaseClient.js: Configuration file for the Supabase connection (URL and Anon Key).
-
-🔧 Database Schema (Table: Laundry)
-
-The application expects a table named Laundry with the following columns:
-
-Column
-
-Type
-
-Description
-
-id
-
-uuid/int
-
-Primary Key
-
-Unique_ID
-
-text
-
-Student/Order unique identifier
-
-User_Name
-
-text
-
-Name of the student
-
-Cloth_Count
-
-int
-
-Number of clothing items
-
-Status
-
-text
-
-One of: Pending, Mismatch, InProgress, Completed
-
-Time
-
-text
-
-Timestamp of the last status change
-
-💡 Key Logic: Inline Discrepancy Editing
-
-The dashboard uses a dual-state pattern for editing counts:
-
-editingId: Tracks which specific Unique_ID is currently in edit mode.
-
-editValue: Buffers the new numeric input before it is saved to the database.
-
-This ensures that only one item is edited at a time, providing a clean and focused user experience.
-
-🛠️ Setup Instructions
-
-Clone the repository:
-
-git clone [repository-url]
-
-
-Install Dependencies:
-
+7️⃣ Install Dependencies
 npm install
 
-
-Configure Supabase:
-Update the SUPABASE_URL and SUPABASE_ANON_KEY in the initialization block within App.jsx.
-
-Run Development Server:
-
-npm start
+8️⃣ Run the Project Locally
+npm run dev
 
 
-📝 Usage Note
+The dashboard will be available at:
 
-This system is designed as a single-session management tool. For multi-user real-time synchronization, ensure that Supabase Realtime is enabled on the Laundry table.
+http://localhost:5173
+
+
+(or the port shown in your terminal)
+
+🔐 Features
+
+Real-time parking slot detection
+
+Secure authentication using Supabase
+
+Live React-based dashboard
+
+Cloud-based real-time data synchronization
+
+Scalable design for public parking systems
+
+
+🤝 Contributions
+
+Feel free to fork the repository, experiment with the system, or improve features.
