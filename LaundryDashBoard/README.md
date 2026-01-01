@@ -1,4 +1,7 @@
-A specialized internal management system for "KapikadLion Laundry" designed to track student laundry cycles from initial request to final collection. This dashboard provides real-time updates and discrepancy management to ensure accurate clothing counts.
+🚗 PlotSense – IoT-Based Smart Parking System
+
+PlotSense is an IoT-based smart parking prototype designed to solve parking management issues in malls and public spaces. It uses IR sensors with ESP32 to detect parking slot occupancy and sends real-time data to Supabase, which is visualized on a React-based dashboard with authentication.
+
 
 🚀 Features
 
