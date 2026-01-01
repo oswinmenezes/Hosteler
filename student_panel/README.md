@@ -1,16 +1,89 @@
-# React + Vite
+# 🌟 Project README
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 📌 Overview
 
-Currently, two official plugins are available:
+This project runs using Node.js and npm. Follow the steps below to set it up and start the development server.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## ✅ Prerequisites
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Make sure you have the following installed:
 
-## Expanding the ESLint configuration
+* Node.js (LTS recommended)
+* npm (comes with Node.js)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Check versions:
+
+```bash
+node -v
+npm -v
+```
+
+---
+
+## 🔐 Environment Variables
+
+Create a `.env` (or `.env.local`) file in the project root and add:
+
+```env
+VITE_SUPABASE_URL=your_supabase_url
+VITE_SUPABASE_KEY=your_superbase_key
+```
+
+> Restart the dev server after changing environment variables.
+
+---
+
+## 🚀 Getting Started
+
+### 🔹 Step 1: Install dependencies
+
+Run this inside the project folder:
+
+```bash
+npm install
+```
+
+### 🔹 Step 2: Start the development server
+
+```bash
+npm run dev
+```
+
+The app should now be running, usually at:
+
+```
+http://localhost:5173
+```
+
+---
+
+
+## ⚙️ NPM Scripts
+
+| Command       | Description                       |
+| ------------- | --------------------------------- |
+| `npm install` | Installs all project dependencies |
+| `npm run dev` | Runs the development server       |
+
+---
+
+## 🛠 Troubleshooting
+
+If things don’t work:
+
+1. Delete `node_modules` and reinstall:
+
+   ```bash
+   rm -rf node_modules
+   npm install
+   ```
+2. Make sure Node.js version is compatible.
+3. Check the terminal for detailed error messages.
+
+---
+
+## 📄 License
+
+This project is for learning/demo purposes unless otherwise noted.
