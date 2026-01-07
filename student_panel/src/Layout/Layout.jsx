@@ -8,6 +8,9 @@ import Mess from "../views/Mess";
 import Gym from "../views/Gym";
 import Attendance from "../views/Attendance";
 import Profile from "../views/Profile";
+import Laundry from "../views/Laundry";
+import StudentChatbot from "../views/StudentChatbot";
+
 
 export default function Layout({ student, onLogout }) {
   const [view, setView] = useState("dashboard");
@@ -26,6 +29,9 @@ export default function Layout({ student, onLogout }) {
         {view === "gym" && <Gym student={student} />}
         {view === "attendance" && <Attendance student={student} />}
         {view === "profile" && <Profile student={student} />}
+        {view === "laundry" && <Laundry />}
+        {view === "chatbot" && <StudentChatbot />}
+
       </main>
     </div>
   );

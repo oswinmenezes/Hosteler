@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { supabase } from "../supabase";
 
-export default function Login({ onLogin }) {
+export default function Login({ onSwitch, onLogin }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -31,8 +31,8 @@ export default function Login({ onLogin }) {
     <div className="login-screen">
       <div className="login-card">
 
-        <h1>Sign in</h1>
-        <p className="sub">Use your registered email and password.</p>
+        <h1>Login</h1>
+        <p>Use your registered email and password.</p>
 
         {error && <div className="error-message">{error}</div>}
 
@@ -42,7 +42,7 @@ export default function Login({ onLogin }) {
             <input
               type="email"
               value={email}
-              onChange={e => setEmail(e.target.value)}
+              onChange={(e) => setEmail(e.target.value)}
               required
             />
           </div>
@@ -52,7 +52,7 @@ export default function Login({ onLogin }) {
             <input
               type="password"
               value={password}
-              onChange={e => setPassword(e.target.value)}
+              onChange={(e) => setPassword(e.target.value)}
               required
             />
           </div>
@@ -61,6 +61,18 @@ export default function Login({ onLogin }) {
             {loading ? "Signing in..." : "Login"}
           </button>
         </form>
+
+        {/* SIGN UP LINK */}
+        <div style={{ marginTop: "16px", textAlign: "center" }}>
+          Don’t have an account?{" "}
+          <span
+            style={{ color: "#2563eb", cursor: "pointer", fontWeight: 600 }}
+            onClick={() => onSwitch("signup")}
+          >
+            Sign up
+          </span>
+        </div>
+
       </div>
     </div>
   );
