@@ -30,10 +30,9 @@ export default function Login({ onLogin }) {
   return (
     <div className="login-screen">
       <div className="login-card">
-        <div className="logo-center">Hostel Portal</div>
 
-        <h2>Sign in</h2>
-        <p>Use your registered email and password.</p>
+        <h1>Sign in</h1>
+        <p className="sub">Use your registered email and password.</p>
 
         {error && <div className="error-message">{error}</div>}
 
