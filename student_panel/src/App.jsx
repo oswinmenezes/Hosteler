@@ -48,8 +48,8 @@ export default function App() {
     );
   }
 
-  // logged in but student record missing
-  if (!student) return <div>Loading profile…</div>;
+  // // logged in but student record missing
+  // if (!student) return <div>Loading profile…</div>;
 
   return <Layout student={student} onLogout={handleLogout} />;
 }
