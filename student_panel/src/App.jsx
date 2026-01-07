@@ -6,6 +6,10 @@ import Signup from "./auth/Signup";
 import Layout from "./Layout/Layout";
 import getStudent from "./getStudent";
 
+import Laundry from "./views/Laundry";
+import StudentChatbot from "./views/StudentChatbot";
+
+
 export default function App() {
   const [user, setUser] = useState(null);
   const [student, setStudent] = useState(null);
@@ -40,13 +44,19 @@ export default function App() {
   }
 
   // Not logged in → show login / signup
-  if (!user) {
-    return view === "login" ? (
-      <Login onLogin={setUser} />
-    ) : (
-      <Signup />
-    );
-  }
+if (!user) {
+  return view === "login" ? (
+    <Login
+      onLogin={setUser}
+      onSwitch={(view) => setView(view)}
+    />
+  ) : (
+    <Signup
+      onSwitch={(view) => setView(view)}
+    />
+  );
+}
+
 
   // // logged in but student record missing
   // if (!student) return <div>Loading profile…</div>;

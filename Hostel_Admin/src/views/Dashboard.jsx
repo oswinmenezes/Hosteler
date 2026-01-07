@@ -30,14 +30,26 @@ export default function Dashboard() {
 
     setGymActive(gCount || 0);
 
-    // mess opt-out today
-    const { count: mCount } = await supabase
-      .from("Mess_Attendance")
-      .select("*", { count: "exact", head: true })
-      .eq("Date", today)
-      .eq("Opt_Out", true);
+// mess breakdown
+async function getMealCount(meal, optout) {
+  const { count } = await supabase
+    .from("Mess_Attendance")
+    .select("*", { count: "exact", head: true })
+    .eq("Date", today)
+    .eq("Meal_Type", meal)
+    .eq("Opt_Out", optout);
 
-    setMessOptOut(mCount || 0);
+  return count || 0;
+}
+
+const morningOut = await getMealCount("morning", true);
+const lunchOut   = await getMealCount("afternoon", true);
+const nightOut   = await getMealCount("night", true);
+
+const totalOut = morningOut + lunchOut + nightOut;
+
+setMessOptOut(totalOut);
+
 
     // attendance sessions today
     const { count: sCount } = await supabase

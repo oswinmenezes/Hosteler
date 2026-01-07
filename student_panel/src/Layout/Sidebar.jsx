@@ -1,12 +1,15 @@
 export default function Sidebar({ current, setCurrent }) {
   const menu = [
-    ["dashboard", "Dashboard"],
-    ["complaints", "Complaints"],
-    ["mess", "Mess"],
-    ["gym", "Gym"],
-    ["attendance", "Attendance"],
-    ["profile", "Profile"],
-  ];
+  ["dashboard", "Dashboard"],
+  ["complaints", "Complaints"],
+  ["mess", "Mess"],
+  ["gym", "Gym"],
+  ["attendance", "Attendance"],
+  ["profile", "Profile"],
+  ["laundry", "Laundry"],
+  ["chatbot", "Chatbot"],
+];
+
 
   return (
     <aside>

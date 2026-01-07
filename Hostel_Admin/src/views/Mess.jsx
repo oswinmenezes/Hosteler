@@ -57,9 +57,10 @@ export default function Mess() {
           className="search-box"
           style={{ width: "160px" }}
         >
-          <option value="breakfast">Breakfast</option>
-          <option value="lunch">Lunch</option>
-          <option value="dinner">Dinner</option>
+          <option value="morning">Morning</option>
+          <option value="afternoon">Afternoon</option>
+          <option value="night">Night</option>
+
         </select>
       </div>
 
