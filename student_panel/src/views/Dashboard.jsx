@@ -13,6 +13,11 @@ export default function Dashboard({ student }) {
           <span className="stat-label">Room</span>
           <div className="stat-value">{student?.Room_No}</div>
         </div>
+
+        <div className="stat-card">
+          <span className="stat-label">Laundry ID</span>
+          <div className="stat-value">{student?.BID}</div>
+        </div>
       </div>
     </div>
   );
