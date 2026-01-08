@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { GoogleGenerativeAI } from "@google/generative-ai";
-
+import ReactMarkdown from 'react-markdown';
 // 1. INITIALIZE GEMINI
 // Replace with your actual API Key from Google AI Studio
 const API_KEY = "AIzaSyAwhf7Jf-QOT_weo5Z8n7z6grV5I72QPb0"; 
 const genAI = new GoogleGenerativeAI(API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+const context = "ST JOSEPH ENGINEERING COLLEGE MANGALORE. ADDRESS: Vamanjoor, Mangaluru, Karnataka 575028. COLLEGE OFFICE: +91 824 2263753, 2263754, 2263755, 2263756. FAX: +91 824 2263751. ADMISSIONS: Mobile +91 9972932972, +91 9972695974, Office +91 824 2868155, 106. EMAIL: admissions@sjec.ac.in, office@sjec.ac.in. DIRECTOR: Rev Fr Wilfred Prakash DSouza, Tel +91 824 2263758, Email sjec@sjec.ac.in. ASST DIRECTOR: Rev Fr Kenneth Rayner Crasta, Tel +91 824 2263960. PRINCIPAL: Dr Rio DSouza, Tel +91 824 2263732, Email principal@sjec.ac.in. GENTS HOSTEL WARDEN: +91 824 2263955, gents.hostel@sjec.ac.in. LADIES HOSTEL WARDEN: +91 824 2263953, ladies.hostel@sjec.ac.in. RECRUITMENT: recruitment@sjec.ac.in. WEB SUPPORT: support@sjec.ac.in. CODES: CET E129, PGCET MBA B300, MCA C484.";
 
 export default function StudentChatbot() {
   const [messages, setMessages] = useState([
@@ -36,21 +37,22 @@ export default function StudentChatbot() {
     try {
       // 2. STRICT SYSTEM PROMPT (Guardrails)
       const systemInstruction = `
-        You are the official Campus Assistant for St Joseph Engineering College (SJEC), Mangaluru.
-        IDENTITY:
-        - Your name is Amphi
-        - You are located in Vamanjoor, Mangaluru.
-        
-        STRICT SCOPE RULES:
-        1. ONLY answer questions about SJEC (Admissions, Departments, Hostels, Campus life, Placements, Mangaluru location).
-        2. If the user asks about anything UNRELATED to the college (e.g., general science, global history, cooking, celebrities, or random math), 
-           respond ONLY with: "I am specialized only in SJEC campus queries. Please ask me something related to the college!"
-        3. Do not provide code or solve homework unless it's specifically about an SJEC course or lab.
-        4. Be professional and encouraging to students.
-      `;
+  You are Amphi, the official Campus Assistant for St Joseph Engineering College (SJEC), Mangaluru.
+  
+  CONTEXT DATA:
+  ${context}
+
+  STRICT SCOPE & KNOWLEDGE RULES:
+  1. ONLY answer questions about SJEC (Admissions, Departments, Hostels, Campus life, Placements, etc.).
+  2. PRIORITIZE THE CONTEXT DATA: Always look at the "CONTEXT DATA" section above to find specific names, phone numbers, and codes (E129, B300, C484).
+  3. IF THE ANSWER IS NOT IN CONTEXT: Use your general knowledge about SJEC to answer. 
+  4. IF STILL UNKNOWN: If you cannot find the answer in the provided context or your internal knowledge, politely direct the user to the official SJEC office at +91 824 2263753 or email office@sjec.ac.in.
+  5. OUT-OF-SCOPE: If the user asks about unrelated topics (cooking, math, global news), respond ONLY with: "I am specialized only in SJEC campus queries. Please ask me something related to the college!"
+  6. Be professional, encouraging, and clear.
+`;
 
       // 3. CALL GEMINI
-      const result = await model.generateContent(`${systemInstruction}\n\nStudent Query: ${text}`);
+      const result = await model.generateContent(`${systemInstruction}\n\nStudent Query: ${text} use context if you dont have a answer{context}`);
       const response = result.response;
       const botText = response.text();
 
@@ -101,8 +103,7 @@ export default function StudentChatbot() {
               maxWidth: '80%',
               fontSize: '14px',
               lineHeight: '1.5'
-            }}>
-              {msg.text}
+            }}><ReactMarkdown>{msg.text}</ReactMarkdown>
             </div>
           ))}
           {isTyping && (
