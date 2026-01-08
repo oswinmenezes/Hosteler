@@ -43,17 +43,12 @@ export default function App() {
     supabase.auth.signOut();
   }
 
-  // Not logged in → show login / signup
+
 if (!user) {
   return view === "login" ? (
-    <Login
-      onLogin={setUser}
-      onSwitch={(view) => setView(view)}
-    />
+    <Login onLogin={setUser} onSwitch={setView} />
   ) : (
-    <Signup
-      onSwitch={(view) => setView(view)}
-    />
+    <Signup onSwitch={setView} />
   );
 }
 
