@@ -241,7 +241,7 @@ export default function App() {
     session ? (
       <div className="app-shell">
         <aside>
-          <div className="logo">KapikadLion Laundry </div>
+          <div className="logo">Hosteler Laundry </div>
           <nav>
             <div className={`nav-item ${view === 'home' ? 'active' : ''}`} onClick={() => setView('home')}>
               <span>Home Dashboard</span>

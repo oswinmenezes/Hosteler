@@ -1,10 +1,10 @@
 import { supabase } from "./supabase";
 
-export default async function getStudent(authId) {
-  const { data } = await supabase
+export default async function getStudent(email) {
+  const { data, error } = await supabase
     .from("Users")
     .select("*")
-    .eq("auth_id", authId)
+    .eq("email", email).eq("auth_id",uuid)
     .single();
 
   return data;
