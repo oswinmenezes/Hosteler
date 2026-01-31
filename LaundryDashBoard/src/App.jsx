@@ -1,6 +1,6 @@
+import { supabase, triggerLaundryEvent } from './n8n';
 import React, { useEffect, useState } from 'react';
 import "./App.css";
-import { supabase } from '../SupabaseClient';
 import Login from './Login';
 
 export default function App() {
@@ -57,20 +57,48 @@ export default function App() {
 
   // --- Logic Handlers ---
   async function handleAction(item, action) {
+    console.log("Action Triggered:", action, "for UID:", item.Unique_ID);
     const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
     if (action === "pickup") {
+      // 1. Delete from Supabase
       const { error } = await supabase.from("Laundry").delete().eq("Unique_ID", item.Unique_ID);
       if (error) {
-        console.log(error.message);
+        console.error("Delete Error:", error.message);
         return;
       }
-    } else {
-      const { error } = await supabase.from("Laundry").update({ "Status": action, "Time": time }).eq("Unique_ID", item.Unique_ID);
+      // 2. Notify n8n
+      triggerLaundryEvent('collection_completed', item);
+    } 
+    else {
+      // 1. Update Status in Supabase
+      const { error } = await supabase
+        .from("Laundry")
+        .update({ "Status": action, "Time": time })
+        .eq("Unique_ID", item.Unique_ID);
+
       if (error) {
-        console.log(error.message);
+        console.error("Update Error:", error.message);
         return;
+      }
+
+      // 2. Decide which n8n event to trigger
+      if (action === "InProgress") {
+        if (item.Status === "Mismatch") {
+          triggerLaundryEvent('mismatch_resolved', item);
+        } else {
+          triggerLaundryEvent('wash_started', item);
+        }
+      } 
+      else if (action === "Mismatch") {
+        triggerLaundryEvent('mismatch_detected', item);
+      } 
+      else if (action === "Completed") {
+        triggerLaundryEvent('washing_completed', item);
       }
     }
+
+    // 3. Refresh the UI
     fetchDet();
   }
 
@@ -241,7 +269,7 @@ export default function App() {
     session ? (
       <div className="app-shell">
         <aside>
-          <div className="logo">KapikadLion Laundry </div>
+          <div className="logo">Hosteler Laundry </div>
           <nav>
             <div className={`nav-item ${view === 'home' ? 'active' : ''}`} onClick={() => setView('home')}>
               <span>Home Dashboard</span>
