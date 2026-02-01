@@ -12,27 +12,18 @@ export default function Attendance() {
   useEffect(() => {
     let subscription;
     if (createdSession) {
-      
-      console.log("hii");
-      sessionIdRef.current = createdSession.session_id;
-      subscription = supabase
-        .channel("schema-db-changes")
-        .on(
-          "postgres_changes",
-          {
-            event: "UPDATE",
-            schema: "public",
-          },
-          (payload) => {
-            console.log(payload);
-            const row = payload.new;
-            if (row.is_used) {
-              // Create new session with same name
-              createSessionWithSameName();
-            }
-          }
-        )
-        .subscribe();
+     
+const subscription   = supabase
+  .channel('schema-db-changes')
+  .on(
+    'postgres_changes',
+    {
+      event: 'UPDATE',
+      schema: 'public',
+    },
+    (payload) => createSessionWithSameName()
+  )
+  .subscribe()
     }
     return () => {
       if (subscription) supabase.removeChannel(subscription);

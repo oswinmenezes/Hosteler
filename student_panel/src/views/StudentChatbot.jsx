@@ -3,7 +3,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import ReactMarkdown from 'react-markdown';
 // 1. INITIALIZE GEMINI
 // Replace with your actual API Key from Google AI Studio
-const API_KEY = "AIzaSyAwhf7Jf-QOT_weo5Z8n7z6grV5I72QPb0"; 
+const API_KEY = "AIzaSyB7931gK4qR5c7WojPBWtawTYPCUd82Wg8"; 
 const genAI = new GoogleGenerativeAI(API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 const context = "ST JOSEPH ENGINEERING COLLEGE MANGALORE. ADDRESS: Vamanjoor, Mangaluru, Karnataka 575028. COLLEGE OFFICE: +91 824 2263753, 2263754, 2263755, 2263756. FAX: +91 824 2263751. ADMISSIONS: Mobile +91 9972932972, +91 9972695974, Office +91 824 2868155, 106. EMAIL: admissions@sjec.ac.in, office@sjec.ac.in. DIRECTOR: Rev Fr Wilfred Prakash DSouza, Tel +91 824 2263758, Email sjec@sjec.ac.in. ASST DIRECTOR: Rev Fr Kenneth Rayner Crasta, Tel +91 824 2263960. PRINCIPAL: Dr Rio DSouza, Tel +91 824 2263732, Email principal@sjec.ac.in. GENTS HOSTEL WARDEN: +91 824 2263955, gents.hostel@sjec.ac.in. LADIES HOSTEL WARDEN: +91 824 2263953, ladies.hostel@sjec.ac.in. RECRUITMENT: recruitment@sjec.ac.in. WEB SUPPORT: support@sjec.ac.in. CODES: CET E129, PGCET MBA B300, MCA C484.";
@@ -52,7 +52,7 @@ export default function StudentChatbot() {
 `;
 
       // 3. CALL GEMINI
-      const result = await model.generateContent(`${systemInstruction}\n\nStudent Query: ${text} use context if you dont have a answer{context}`);
+      const result = await model.generateContent(`${systemInstruction}\n\nStudent Query: ${text} use context if you dont have a answer${context}`);
       const response = result.response;
       const botText = response.text();
 

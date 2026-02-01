@@ -3,6 +3,7 @@ import { supabase } from './supabase';
 import Layout from './Layout/Layout';
 import Login from './auth/Login';
 import Signup from './auth/Signup';
+import getStudent from './getStudent';
 
 export default function App() {
   const [user, setUser] = useState(null);
@@ -29,6 +30,27 @@ export default function App() {
     return () => subscription.unsubscribe();
   }, []);
 
+   useEffect(() => {
+    const session = supabase.auth.getSession().then(({ data }) => {
+      setUser(data.session?.user || null);
+    });
+
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setUser(session?.user || null);
+      }
+    );
+
+    return () => listener.subscription.unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    if (user) {
+      getStudent(user.id).then(setStudent);
+    } else {
+      setStudent(null);
+    }
+  }, [user]);
   // One function to load Profile, Active Laundry, and Logs
   const loadUserData = async (email) => {
     try {
@@ -85,12 +107,23 @@ export default function App() {
     }
   };
 
+   useEffect(() => {
+    if (user) {
+      getStudent(user.id).then(setStudent);
+    } else {
+      setStudent(null);
+    }
+  }, [user]);
   const handleLogout = async () => {
     await supabase.auth.signOut();
   };
 
-  if (!user) {
-    return view === "login" ? <Login setView={setView} /> : <Signup setView={setView} />;
+   if (!user) {
+    return view === "login" ? (
+      <Login onLogin={setUser} />
+    ) : (
+      <Signup />
+    );
   }
 
   if (!student) {
