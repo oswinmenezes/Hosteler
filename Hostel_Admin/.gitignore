@@ -1,24 +1,157 @@
-# Logs
-logs
+############################################
+# OS GENERATED FILES
+############################################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+############################################
+# EDITORS & IDEs
+############################################
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+.idea/
+*.iml
+*.swp
+*.swo
+*.bak
+*.tmp
 *.log
+
+############################################
+# NODE / JAVASCRIPT
+############################################
+node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
-lerna-debug.log*
+dist/
+build/
+.next/
+out/
+coverage/
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
-node_modules
-dist
-dist-ssr
-*.local
+############################################
+# PYTHON
+############################################
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+.eggs/
+.venv/
+venv/
+ENV/
+env/
+pip-wheel-metadata/
+.pytest_cache/
+.mypy_cache/
 
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
-.DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+############################################
+# JAVA
+############################################
+*.class
+*.jar
+*.war
+*.ear
+target/
+.gradle/
+build/
+out/
+
+############################################
+# C / C++
+############################################
+*.o
+*.obj
+*.exe
+*.out
+*.app
+*.dll
+*.so
+*.dSYM/
+*.stackdump
+
+############################################
+# ANDROID / KOTLIN
+############################################
+*.apk
+*.aab
+*.dex
+*.log
+.local.properties
+.cxx/
+.externalNativeBuild/
+captures/
+build/
+.gradle/
+
+############################################
+# WEB (GENERAL)
+############################################
+.cache/
+.parcel-cache/
+.sass-cache/
+*.map
+
+############################################
+# DATABASE
+############################################
+*.db
+*.sqlite
+*.sqlite3
+
+############################################
+# ARCHIVES
+############################################
+*.zip
+*.tar
+*.tar.gz
+*.rar
+*.7z
+
+############################################
+# TEMP & BACKUP FILES
+############################################
+*.tmp
+*.temp
+*.old
+*.orig
+*.backup
+*.swp
+*~
+
+############################################
+# LOG FILES
+############################################
+logs/
+*.log
+
+############################################
+# SECURITY
+############################################
+*.pem
+*.key
+*.crt
+secrets/
+credentials/
+
+############################################
+# MISC
+############################################
+.todo
+.todo.md
